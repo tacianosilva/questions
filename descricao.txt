@@ -1,0 +1,4 @@
+Projeto Banco de Questões
+
+Este projeto implementa um Sistema de Banco de Questões para a geração de questionários automáticos. O sistemas trabalhará apenas com questões objetivas. 
+Os principais conceitos são: Questão, Alternativa, Resposta Questão (Alternativas corretas) e Questionário (Conjunto de Questões) e Resposta Questionário (Conjunto de Respostas).
