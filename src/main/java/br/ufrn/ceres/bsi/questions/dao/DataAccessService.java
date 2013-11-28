@@ -6,10 +6,9 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.UserTransaction;
+import javax.persistence.criteria.CriteriaQuery;
 
 import br.ufrn.ceres.bsi.questions.model.Usuario;
 
@@ -91,6 +90,31 @@ public abstract class DataAccessService<T> {
         }
     }
 
+    public List<T> findEntities() {
+        return findEntities(true, -1, -1);
+    }
+
+    public List<T> findEntities(int maxResults, int firstResult) {
+        return findEntities(false, maxResults, firstResult);
+    }
+
+    private List<T> findEntities(boolean all, int maxResults,
+            int firstResult) {
+        EntityManager em = getEntityManager();
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(this.type));
+            Query q = em.createQuery(cq);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     /**
      * Removes the record that is associated with the entity instance
      *
@@ -112,26 +136,6 @@ public abstract class DataAccessService<T> {
                 em.close();
             }
         }
-    }
-
-    /**
-     * Removes the number of entries from a table
-     *
-     * @param <T>
-     * @param items
-     * @return
-     */
-    public boolean deleteItems(T[] items) {
-        for (T item : items) {
-            if (item instanceof Usuario) {
-                Usuario usuario = (Usuario) item;
-                if (usuario.getId() == 1) {
-                    continue;
-                }
-            }
-            getEntityManager().remove(getEntityManager().merge(item));
-        }
-        return true;
     }
 
     /**
@@ -158,7 +162,8 @@ public abstract class DataAccessService<T> {
      * @param namedQueryName
      * @return List
      */
-    public List findWithNamedQuery(String namedQueryName) {
+    @SuppressWarnings("unchecked")
+    public List<T> findWithNamedQuery(String namedQueryName) {
         return getEntityManager().createNamedQuery(namedQueryName).getResultList();
     }
 
@@ -169,6 +174,7 @@ public abstract class DataAccessService<T> {
      * @param parameters
      * @return List
      */
+    @SuppressWarnings("rawtypes")
     public List findWithNamedQuery(String namedQueryName, Map parameters) {
         return findWithNamedQuery(namedQueryName, parameters, 0);
     }
@@ -180,6 +186,7 @@ public abstract class DataAccessService<T> {
      * @param resultLimit
      * @return List
      */
+    @SuppressWarnings("rawtypes")
     public List findWithNamedQuery(String queryName, int resultLimit) {
         return getEntityManager().createNamedQuery(queryName).setMaxResults(resultLimit)
                 .getResultList();
@@ -193,6 +200,7 @@ public abstract class DataAccessService<T> {
      * @param type
      * @return List
      */
+    @SuppressWarnings("unchecked")
     public List<T> findByQuery(String sql) {
         return getEntityManager().createQuery(sql).getResultList();
     }
@@ -218,6 +226,7 @@ public abstract class DataAccessService<T> {
      * @param resultLimit
      * @return List
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public List findWithNamedQuery(String namedQueryName, Map parameters,
             int resultLimit) {
         Set<Map.Entry<String, Object>> rawParameters = parameters.entrySet();
@@ -240,6 +249,7 @@ public abstract class DataAccessService<T> {
      * @param end
      * @return List
      */
+    @SuppressWarnings("rawtypes")
     public List findWithNamedQuery(String namedQueryName, int start, int end) {
         Query query = getEntityManager().createNamedQuery(namedQueryName);
         query.setMaxResults(end - start);

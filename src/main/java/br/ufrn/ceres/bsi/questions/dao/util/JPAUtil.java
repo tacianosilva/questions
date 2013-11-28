@@ -5,7 +5,7 @@ import javax.persistence.Persistence;
 
 /**
  * Classe que define a <code>EntityManagerFactory</code> para a Unidade de
- * Persistência do JPA.
+ * PersistÃªncia do JPA.
  * @author Taciano Morais Silva
  * @version 12/06/2012, 20h58m
  * @since 12/06/2012, 20h58m
