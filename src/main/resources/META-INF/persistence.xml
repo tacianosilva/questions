@@ -7,8 +7,12 @@
 
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
-        <class>br.ufrn.cerescaico.bsi.questions.model.Endereco</class>
-        <class>br.ufrn.cerescaico.bsi.questions.model.Usuario</class>
+        <class>br.ufrn.ceres.bsi.questions.model.BaseEntity</class>
+        <class>br.ufrn.ceres.bsi.questions.model.Endereco</class>
+        <class>br.ufrn.ceres.bsi.questions.model.Autorizacao</class>
+        <class>br.ufrn.ceres.bsi.questions.model.Usuario</class>
+        <class>br.ufrn.ceres.bsi.questions.model.Alternativa</class>
+        <class>br.ufrn.ceres.bsi.questions.model.Questao</class>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
@@ -19,7 +23,7 @@
             <property name="javax.persistence.jdbc.password" value="12345" />
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 
-            <!--  property name="eclipselink.ddl-generation" value="create-tables" / -->
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 
             <property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL_ddlGeneration.jdbc"/>
             <property name="eclipselink.drop-ddl-jdbc-file-name" value="dropDDL_ddlGeneration.jdbc"/>
