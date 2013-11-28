@@ -2,6 +2,7 @@ package br.ufrn.ceres.bsi.questions;
 
 import java.util.List;
 
+import br.ufrn.ceres.bsi.questions.dao.QuestaoService;
 import br.ufrn.ceres.bsi.questions.dao.UserService;
 import br.ufrn.ceres.bsi.questions.dao.util.JPAUtil;
 import br.ufrn.ceres.bsi.questions.model.Endereco;
@@ -57,5 +58,8 @@ public class Main {
             System.out.println(usuario);
         }
 
+        QuestaoService questaoService = new QuestaoService(JPAUtil.EMF);
+        Questao questao1 = new Questao("Você gosta de onde mora?");
+        questaoService.create(questao1);
     }
 }
