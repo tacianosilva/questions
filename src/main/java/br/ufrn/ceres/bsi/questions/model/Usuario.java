@@ -1,8 +1,12 @@
 package br.ufrn.ceres.bsi.questions.model;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 @Entity
@@ -13,7 +17,7 @@ public class Usuario extends BaseEntity implements Serializable {
      */
     private static final long serialVersionUID = -5370901970072298180L;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 50, unique = true)
     private String username;
 
     @Column(length = 50)
@@ -30,6 +34,12 @@ public class Usuario extends BaseEntity implements Serializable {
 
     @OneToOne(cascade = {CascadeType.ALL})
     private Endereco endereco;
+
+    @Column(name = "enable", columnDefinition = "BOOLEAN")
+    private boolean enable;
+
+    @OneToMany
+    private List<Autorizacao> autorizacoes;
 
     public Usuario() {
         endereco = new Endereco();
