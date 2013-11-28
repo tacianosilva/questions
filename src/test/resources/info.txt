@@ -1,0 +1,1 @@
+Pasta de recursos para os testes.
